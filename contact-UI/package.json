@@ -1,0 +1,11 @@
+{
+  "name": "contact-ui",
+  "version": "1.0.0",
+  "description": "contact app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luz Edith Tobar",
+  "license": "ISC"
+}
