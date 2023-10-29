@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using contactApp.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,28 +26,91 @@ namespace contactApp.Controllers
         }
 
         // GET api/<ContactController>/5
+      
+
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            Models.Contact? specificContact = context.Contacts.ToList().FirstOrDefault(contact => contact.Id == id);
+
+            if (specificContact != null)
+            {
+                return Ok(specificContact);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
-        // POST api/<ContactController>
+       // POST api/<ContactController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] Models.Contact newContact)
         {
+            if (newContact != null)
+            {
+                context.Contacts.Add(newContact);
+                context.SaveChanges();
+
+                return CreatedAtAction("Get", new { id = newContact.Id }, newContact);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         // PUT api/<ContactController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+
+        public async Task<IActionResult> Put(int id, [FromBody] Contact updatedContact) {
+
+            if (id != updatedContact.Id)
+            {
+                return BadRequest();
+            }
+
+            context.Contacts.Entry(updatedContact).State = EntityState.Modified;
+
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ContactExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        private bool ContactExists(int id)
         {
+            return context.Contacts.Any(c => c.Id == id);
         }
 
         // DELETE api/<ContactController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var contact = await context.Contacts.FindAsync(id);
+
+            if (contact == null)
+            {
+                return NotFound(); 
+            }
+
+            context.Contacts.Remove(contact); 
+            await context.SaveChangesAsync(); 
+
+            return NoContent();
         }
     }
 }
