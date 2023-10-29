@@ -5,5 +5,6 @@ export interface Contacts {
   email: string;
   phoneNumber: string;
   teamMember: string;
+  address: string;
   imageUrl: string;
 }
