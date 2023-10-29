@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import './App.css';
 import fetchContact from './api/fetchContacts';
+import BootstrapCard from './components/BoostrapCard';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
       <div className="alert alert-success" role="alert">
         Este es un mensaje de éxito.
       </div>
+      <BootstrapCard />
     </div>
   );
 }
