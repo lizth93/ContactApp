@@ -1,4 +1,4 @@
-import BootstrapModal from 'react-bootstrap/Modal';
+import BootstrapModal, { ModalProps } from 'react-bootstrap/Modal';
 import { Contacts } from '../types/card';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
@@ -6,16 +6,11 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import Input from './Input';
 import updateContact from '../api/updateContact';
+import { inputFields } from '../constants';
 
-interface Props {
-    className?: string
-    show: boolean,
-    onHide: () => void;
-    contact: Contacts
-}
-function Modal(props: Props) {
+function Modal(props: ModalProps) {
     const [isEditing, setIsEditing] = useState(false);
-    const [editedContact, setEditedContact] = useState({ ...props.contact });
+    const [editedContact, setEditedContact] = useState<Contacts>({ ...props.contact });
 
     const handleEditContact = () => {
         setIsEditing(true);
@@ -27,18 +22,13 @@ function Modal(props: Props) {
     };
 
     const handleEditValue = (field: string, newValue: string) => {
-        setEditedContact((prevEditedContact) => ({
+        setEditedContact((prevEditedContact: Contacts) => ({
             ...prevEditedContact,
             [field]: newValue,
         }));
     };
 
-    // const handleEditValue = (newValue: string) => {
-    //     setEditedContact({ ...editedContact, name: newValue });
-    // };
-
     const handleSaveContact = async () => {
-        console.log(editedContact, "edited contac what have luz")
         setIsEditing(false);
         const data = await updateContact(props.contact.id, editedContact)
         console.log(data, "luz")
@@ -66,15 +56,18 @@ function Modal(props: Props) {
                     <div>
                         {isEditing ? (
 
-                            <div>
-                                <Input type='text' label="Name" value={editedContact.name} onChange={(newValue) => handleEditValue("name", newValue)} />
-                                <Input type='text' label="Last Name" value={editedContact.lastName} onChange={(newValue) => handleEditValue("lastName", newValue)} />
-                                <Input type='email' label="Email" value={editedContact.email} onChange={(newValue) => handleEditValue("email", newValue)} />
-                                <Input type='number' label="Phone Number" value={editedContact.phoneNumber} onChange={(newValue) => handleEditValue("phoneNumber", newValue)} />
-                                <Input type='text' label="Team Member" value={editedContact.teamMember} onChange={(newValue) => handleEditValue("teamMember", newValue)} />
-                                <Input type='text' label="Address" value={editedContact.address} onChange={(newValue) => handleEditValue("address", newValue)} />
-                                <Input type='text' label="Picture" value={editedContact.imageUrl} onChange={(newValue) => handleEditValue("imageUrl", newValue)} />
-                            </div>
+                            <>
+                                {inputFields.map((field) => (
+                                    <Input
+                                        key={field.key}
+                                        type={field.type}
+                                        label={field.label}
+                                        value={editedContact[field.key]}
+                                        onChange={(newValue) => handleEditValue(field.key, newValue)}
+                                    />
+                                ))}
+                            </>
+
                         ) : (
 
                             <ul>
@@ -110,7 +103,7 @@ function Modal(props: Props) {
                 </div>
 
             </BootstrapModal.Body>
-        </BootstrapModal>
+        </BootstrapModal >
 
     );
 }

@@ -7,4 +7,5 @@ export interface Contacts {
   teamMember: string;
   address: string;
   imageUrl: string;
+  birthday: string;
 }

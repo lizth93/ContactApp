@@ -4,8 +4,8 @@ import { styled } from 'styled-components';
 interface InputProps {
     className?: string
     label: string
-    type: "email" | "text" | "number"
-    value: string
+    type: string
+    value?: string | number
     onChange: (newValue: string) => void;
 }
 function Input(props: InputProps) {
