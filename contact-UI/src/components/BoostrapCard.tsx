@@ -1,18 +1,22 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import { Contacts } from '../types/card';
 
-function BootstrapCard() {
+interface Props {
+    contact: Contacts
+}
+function BootstrapCard(props: Props) {
+
     return (
         <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src="holder.js/100px180" />
+            <Card.Img variant="top" src={props.contact.imageUrl} />
             <Card.Body>
-                <Card.Title>Card Title</Card.Title>
+                <Card.Title>{props.contact.name}</Card.Title>
                 <Card.Text>
-                    Some quick example text to build on the card title and make up the
-                    bulk of the card's content.
+                    {props.contact.phoneNumber}
                 </Card.Text>
-                <Button variant="primary">Go somewhere</Button>
+                <Button variant="primary">Details</Button>
             </Card.Body>
         </Card>
     );

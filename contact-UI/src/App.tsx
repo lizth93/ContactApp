@@ -1,28 +1,46 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import fetchContact from './api/fetchContacts';
 import BootstrapCard from './components/BoostrapCard';
+import styled from 'styled-components';
+import { Contacts } from './types/card';
 
-function App() {
+interface Props {
+  className?: string
+}
+
+function App(props: Props) {
+
+  const [contacts, setContacts] = useState<Contacts[]>([])
 
   useEffect(() => {
     async function getContacts() {
       const data = await fetchContact()
-      console.log(data, "data luz ")
+      if (data) {
+        setContacts(data)
+      }
+      console.log(data)
+
     }
     getContacts()
   }, [])
 
   return (
-    <div className="container">
-      <h1>Mi Aplicación con Bootstrap</h1>
-      <button className="btn btn-primary">Botón de Bootstrap</button>
-      <div className="alert alert-success" role="alert">
-        Este es un mensaje de éxito.
+    <div className={`${props.className} container`}>
+      <h1>Contacts</h1>
+
+      <div className='display-flex'>
+        {contacts.map((c) => <BootstrapCard key={c.id} contact={c} />)}
       </div>
-      <BootstrapCard />
+
     </div>
   );
 }
 
-export default App;
+export default styled(App)`
+.display-flex {
+  display: flex;
+  gap: 1rem;
+
+}
+`;
