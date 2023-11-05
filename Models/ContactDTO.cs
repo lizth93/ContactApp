@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace contactApp.Models
 {
-    public class Contact
+    public class ContactDTO
 
     {
         public int Id { get; set; }

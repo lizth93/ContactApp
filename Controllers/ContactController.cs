@@ -22,7 +22,7 @@ namespace contactApp.Controllers
 
         // GET: api/<ContactController>
         [HttpGet]
-        public IEnumerable<Models.Contact> Get()
+        public IEnumerable<Models.ContactDTO> Get()
         {
             return context.Contacts.ToList();
         }
@@ -33,7 +33,7 @@ namespace contactApp.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            Models.Contact? specificContact = context.Contacts.ToList().FirstOrDefault(contact => contact.Id == id);
+            Models.ContactDTO? specificContact = context.Contacts.ToList().FirstOrDefault(contact => contact.Id == id);
 
             if (specificContact != null)
             {
@@ -47,7 +47,7 @@ namespace contactApp.Controllers
 
        // POST api/<ContactController>
         [HttpPost]
-        public IActionResult Post([FromBody] Models.Contact newContact)
+        public IActionResult Post([FromBody] Models.ContactDTO newContact)
         {
             if (newContact != null)
             {
@@ -65,7 +65,7 @@ namespace contactApp.Controllers
         // PUT api/<ContactController>/5
         [HttpPut("{id}")]
 
-        public async Task<IActionResult> Put(int id, [FromBody] Contact updatedContact) {
+        public async Task<IActionResult> Put(int id, [FromBody] ContactDTO updatedContact) {
 
             if (id != updatedContact.Id)
             {

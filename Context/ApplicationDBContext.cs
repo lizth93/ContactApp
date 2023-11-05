@@ -5,5 +5,5 @@ public class AplicationDBContext : DbContext
 {
     public AplicationDBContext(DbContextOptions<AplicationDBContext> options) : base(options) { }
 
-    public DbSet<Contact> Contacts { get; set; }
+    public DbSet<ContactDTO> Contacts { get; set; }
 }
