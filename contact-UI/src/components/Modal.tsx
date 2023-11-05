@@ -31,7 +31,6 @@ function Modal(props: ModalProps) {
     const handleSaveContact = async () => {
         setIsEditing(false);
         const data = await updateContact(props.contact.id, editedContact)
-        console.log(data, "luz")
     };
 
     return (

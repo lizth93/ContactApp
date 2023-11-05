@@ -1,5 +1,6 @@
 
 using contactApp.Context;
+using contactApp.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,9 @@ namespace contactApp
             {
                 opt.UseSqlServer(builder.Configuration.GetConnectionString("AuthConnectionString"));
             });
+
+            builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+
             //Enable CORS
 
             builder.Services.AddCors(options =>
@@ -44,7 +48,7 @@ namespace contactApp
 
             builder.Services.AddIdentityCore<IdentityUser>()
                 .AddRoles<IdentityRole>()
-                .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("Contact")//what name I need to use? luz
+                .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("ContactTokenProvider")
                 .AddEntityFrameworkStores<AuthContactDBContext>()
                 .AddDefaultTokenProviders();
 
