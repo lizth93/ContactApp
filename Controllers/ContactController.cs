@@ -9,7 +9,7 @@ namespace contactApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
+    [Authorize]
     public class ContactController : ControllerBase
     {
         private readonly AplicationDBContext context;
@@ -22,7 +22,6 @@ namespace contactApp.Controllers
 
         // GET: api/<ContactController>
         [HttpGet]
-        [Authorize(Roles = "Reader")]
         public IEnumerable<Models.ContactDTO> Get()
         {
             return context.Contacts.ToList();
@@ -30,7 +29,7 @@ namespace contactApp.Controllers
 
         // GET api/<ContactController>/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "Reader")]
+
         public IActionResult Get(int id)
         {
             Models.ContactDTO? specificContact = context.Contacts.ToList().FirstOrDefault(contact => contact.Id == id);
@@ -47,7 +46,7 @@ namespace contactApp.Controllers
 
        // POST api/<ContactController>
         [HttpPost]
-        [Authorize(Roles = "Writer, Reader")]
+
         public IActionResult Post([FromBody] Models.ContactDTO newContact)
         {
             if (newContact != null)
@@ -65,7 +64,7 @@ namespace contactApp.Controllers
 
         // PUT api/<ContactController>/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "Writer, Reader")]
+
         public async Task<IActionResult> Put(int id, [FromBody] ContactDTO updatedContact) {
 
             if (id != updatedContact.Id)
@@ -101,7 +100,7 @@ namespace contactApp.Controllers
 
         // DELETE api/<ContactController>/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Writer")]
+
         public async Task<IActionResult> Delete(int id)
         {
             var contact = await context.Contacts.FindAsync(id);
