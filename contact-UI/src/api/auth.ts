@@ -23,13 +23,15 @@ export default async function getAuth(
       requestOptions
     );
 
-    
     if (!response.ok && response.status === 401) {
         Cookies.remove('lwaToken');
+        return false
     }
 
-    return await response.json();
+    const data = await response.json();
 
+    Cookies.set('lwaToken', data.jwtToken);
+    return true;
 
   } catch (error) {
     console.error("Error in the POST request:", error);

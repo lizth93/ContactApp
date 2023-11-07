@@ -14,12 +14,9 @@ import getAuth from '../api/auth';
 
 interface Props {
     className?: string;
-    onAuthentication: (token: string) => void;
+    onAuthentication: (authorize: boolean) => void;
 }
 
-interface AuthResponse {
-    jwtToken: string;
-}
 
 function Login(props: Props) {
     const [email, setEmail] = useState<string>("");
@@ -34,12 +31,8 @@ function Login(props: Props) {
     }
 
     const handleLogin = async () => {
-        const data: AuthResponse = await getAuth(email, password)
-
-        if (data?.jwtToken) {
-
-            props.onAuthentication(data.jwtToken);
-        }
+        const data = await getAuth(email, password)
+        props.onAuthentication(data);
 
         console.log(data, "result token luz ", email, password)
     }
