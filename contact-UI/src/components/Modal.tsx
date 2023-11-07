@@ -30,7 +30,7 @@ function Modal(props: ModalProps) {
 
     const handleSaveContact = async () => {
         setIsEditing(false);
-        const data = await updateContact(props.contact.id, editedContact)
+        await updateContact(props.contact.id, editedContact)
     };
 
     return (

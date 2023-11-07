@@ -1,9 +1,7 @@
 import Cookies from "js-cookie";
-import { Contacts } from "../types/card";
 
-export default async function updateContact(
+export default async function deleteContact(
   id: number,
-  updatedContact: Contacts
 ) {
   try {
     const token = Cookies.get('lwaToken');
@@ -18,12 +16,9 @@ export default async function updateContact(
       "Content-Type": "application/json"
     });
 
-    var raw = JSON.stringify(updatedContact);
-
     var requestOptions = {
-      method: "PUT",
+      method: "DELETE",
       headers: headers,
-      body: raw,
     };
 
     const response = await fetch(
@@ -32,13 +27,13 @@ export default async function updateContact(
     );
 
     if (response.ok) {
-      const result = await response.text();
-      console.log(result);
+        return await response.text();
+
     } else {
-      console.error("Error updating the contact");
+      console.error("Error deleting the contact");
     }
   } catch (error) {
-    console.error("Error in the PUT request:", error);
+    console.error("Error in the DELETE request:", error);
     throw error;
   }
 }

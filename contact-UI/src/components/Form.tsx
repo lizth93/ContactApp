@@ -13,14 +13,14 @@ import { Contacts } from '../types/card';
 
 const initialContact: Contacts = {
     id: 0,
-    name: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    teamMember: "",
-    address: "",
-    imageUrl: "",
-    birthday: "",
+    name: "prueba",
+    lastName: "prueba",
+    email: "prueba@gmail.com",
+    phoneNumber: "3137036415",
+    teamMember: "tobar",
+    address: "calle6 a oeste",
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_nzOUK1PV4HZN0ZDwEhi0QRH7NJoJ74nkGeSQGy4oq_mk6PXNKkVJwZ4cUPa0Fg4e8pQ&usqp=CAU",
+    birthday: "1990-11-07"
 }
 
 function Form(props: FormProps) {
@@ -34,7 +34,6 @@ function Form(props: FormProps) {
         }));
     }
     const handleSaveContact = async () => {
-        // setIsAdding(false)
         const data = await addContact(newContact)
         console.log(data, "new Contact ")
 

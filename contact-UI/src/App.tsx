@@ -5,6 +5,7 @@ import { Contacts } from './types/card';
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  Navigate,
   Route,
   RouterProvider,
 } from 'react-router-dom';
@@ -43,6 +44,7 @@ function App() {
       router={createBrowserRouter(
         createRoutesFromElements(
           <>
+            <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="home" element={<ContactComponent contacts={contacts} />} />
             <Route path="login" element={<Login onAuthentication={handleAuthentication} />} />
           </>
