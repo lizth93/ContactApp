@@ -5,13 +5,15 @@ import Image from 'react-bootstrap/Image';
 import updateContact from "../api/updateContact";
 import { Contacts } from '../types/card';
 import Button from 'react-bootstrap/Button';
+import { useDispatch } from "react-redux";
+import { fetchContacts } from "../api/fetchContacts";
 
 interface EditModalProps {
     contact: Contacts;
 }
 
-
 export default function EditModal({ contact }: EditModalProps) {
+    const dispatch = useDispatch();
     const [isEditing, setIsEditing] = useState(false);
     const [editedContact, setEditedContact] = useState<Contacts>({ ...contact });
 
@@ -34,6 +36,7 @@ export default function EditModal({ contact }: EditModalProps) {
     const handleSaveContact = async () => {
         setIsEditing(false);
         await updateContact(contact.id, editedContact)
+        dispatch(fetchContacts() as any);
     };
     return <>
         <Image src={contact.imageUrl} alt="Contact" className='image' />

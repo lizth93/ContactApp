@@ -16,7 +16,6 @@ import { store } from './store/store';
 function App() {
   const [isAuthorize, setIsAuthorize] = useState<boolean>(false)
 
-
   useEffect(() => {
     if (isAuthorize === true) {
       window.location.href = '/home';

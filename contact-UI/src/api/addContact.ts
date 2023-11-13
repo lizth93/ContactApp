@@ -1,40 +1,13 @@
-import Cookies from "js-cookie";
+import { RequestOptions } from "../types/api";
 import { Contacts } from "../types/card";
+import httpRequest from "./httpRequest";
 
-export default async function addContact(addContact: Contacts) {
-  try {
+export default async function addContact(newContact: Contacts) {
+  const raw = JSON.stringify(newContact);
+  const options: RequestOptions = {
+    method: "POST",
+    body: raw,
+  };
 
-    const token = Cookies.get('lwaToken');
-
-    if (!token) {
-      console.error("Token not found");
-      return null;
-    }
-
-    const headers = new Headers({
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json"
-    });
-
-
-    const raw = JSON.stringify(addContact);
-
-    const requestOptions = {
-      method: 'POST',
-      headers: headers,
-      body: raw,
-    };
-
-    const response = await fetch("https://localhost:7068/api/Contact", requestOptions)
-
-    if (response.ok) {
-      const result = await response.text();
-      console.log(result);
-    } else {
-      console.error("Error adding the contact");
-    }
-  } catch (error) {
-    console.error("Error in the POST request:", error);
-    throw error;
-  }
+  return httpRequest("", options);
 }

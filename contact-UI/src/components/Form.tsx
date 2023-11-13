@@ -9,6 +9,8 @@ import { FormProps } from '../types/general';
 import addContact from '../api/addContact';
 import { useState } from 'react';
 import { Contacts } from '../types/card';
+import { useDispatch } from 'react-redux';
+import { fetchContacts } from '../api/fetchContacts';
 
 
 const initialContact: Contacts = {
@@ -24,7 +26,7 @@ const initialContact: Contacts = {
 }
 
 function Form(props: FormProps) {
-
+    const dispatch = useDispatch();
     const [newContact, setNewContact] = useState<Contacts>(initialContact);
 
     const handleAddContact = (field: string, newValue: string) => {
@@ -35,8 +37,8 @@ function Form(props: FormProps) {
     }
     const handleSaveContact = async () => {
         const data = await addContact(newContact)
+        dispatch(fetchContacts() as any);
         console.log(data, "new Contact ")
-
     }
 
     const handleCancelAdd = () => {
