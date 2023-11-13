@@ -4,8 +4,9 @@ import styled from 'styled-components';
 import { ReactNode } from 'react';
 
 interface CustomModalProps extends ModalProps {
-    contact: Contacts;
+    contact?: Contacts;
     children: ReactNode;
+    className?: string
 }
 
 function Modal(props: CustomModalProps) {
@@ -21,12 +22,12 @@ function Modal(props: CustomModalProps) {
         >
             <BootstrapModal.Header closeButton>
                 <BootstrapModal.Title id="example-custom-modal-styling-title">
-                    Details of {props.contact.name}
+                    Details of {props?.contact?.name}
                 </BootstrapModal.Title>
 
             </BootstrapModal.Header>
             <BootstrapModal.Body>
-                <div className='modal-grid '>
+                <div className={props.className}>
                     {props.children}
                 </div>
 

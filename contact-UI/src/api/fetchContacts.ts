@@ -10,7 +10,7 @@ export const fetchContacts = createAsyncThunk<Contacts[], void>(
       method: "GET",
     };
 
-    const response = await httpRequest("", options);
+    const response = await httpRequest("Contact", options);
 
     if (response) {
       return JSON.parse(response) as Contacts[];

@@ -11,6 +11,8 @@ import styled from 'styled-components';
 
 import { Button } from 'react-bootstrap';
 import getAuth from '../api/auth';
+import Modal from './Modal';
+import Register from './Register';
 
 interface Props {
     className?: string;
@@ -19,6 +21,7 @@ interface Props {
 
 
 function Login(props: Props) {
+    const [showModal, setShowModal] = useState(false);
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
@@ -36,6 +39,13 @@ function Login(props: Props) {
 
         console.log(data, "result token luz ", email, password)
     }
+    const handleRegister = () => {
+        setShowModal(true)
+    }
+
+    const handleCloseModal = () => {
+        setShowModal(false)
+    };
     return (
         <MDBContainer className={`${props.className} p-3 my-5 d-flex flex-column w-50`}>
 
@@ -53,7 +63,7 @@ function Login(props: Props) {
 
 
             <div className="text-center">
-                <p>Not a member? <a href="#!">Register</a></p>
+                <p>Not a member? <a href="#!" onClick={handleRegister}>Register</a></p>
                 <p>or sign up with:</p>
 
                 <div className='d-flex justify-content-between mx-auto' style={{ width: '40%' }}>
@@ -76,6 +86,9 @@ function Login(props: Props) {
                 </div>
             </div>
 
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Register />
+            </Modal>
         </MDBContainer>
     );
 }

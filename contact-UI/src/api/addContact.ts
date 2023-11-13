@@ -9,5 +9,5 @@ export default async function addContact(newContact: Contacts) {
     body: raw,
   };
 
-  return httpRequest("", options);
+  return httpRequest("Contact", options);
 }

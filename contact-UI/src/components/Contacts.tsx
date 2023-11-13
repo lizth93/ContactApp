@@ -21,9 +21,6 @@ export interface RootState {
 function ContactComponent(props: ContactsProps) {
     const dispatch = useDispatch();
     const contacts = useSelector((state: RootState) => state.contacts.contacts);
-
-
-    console.log(contacts, "contacts luz")
     const [isAdding, setIsAdding] = useState<boolean>(false)
     const isAuthorized = Cookies.get('lwaToken');
 

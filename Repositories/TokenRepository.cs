@@ -22,8 +22,6 @@ namespace contactApp.Repositories
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
             claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
 
-
-
             foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));

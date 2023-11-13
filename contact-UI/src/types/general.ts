@@ -7,3 +7,9 @@ export interface FormProps {
   isAdding: boolean;
   cancelIsAdding: (isAdding: boolean) => void;
 }
+
+export interface User {
+  username: string;
+  password: string;
+  roles: string[];
+}

@@ -46,7 +46,7 @@ function BootstrapCard(props: Props) {
                     Phone Number: {props.contact.phoneNumber}
                 </Card.Text>
 
-                <Modal show={showModalEdit} onHide={handleCloseModal} contact={props.contact}>
+                <Modal show={showModalEdit} onHide={handleCloseModal} contact={props.contact} className="modal-grid" >
                     <EditModal contact={props.contact} />
                 </Modal>
 

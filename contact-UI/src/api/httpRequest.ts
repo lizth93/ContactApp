@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { RequestOptions } from "../types/api";
 
-const API_BASE_URL = "https://localhost:7068/api/Contact";
+const API_BASE_URL = "https://localhost:7068/api";
 
 export default async function httpRequest(
   url: string,

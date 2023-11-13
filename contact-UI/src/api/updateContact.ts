@@ -6,7 +6,7 @@ export default async function updateContact(
   id: number,
   updatedContact: Contacts
 ) {
-  const url = `${id}`;
+  const url = `Contact/${id}`;
   const raw = JSON.stringify(updatedContact);
   const options: RequestOptions = {
     method: "PUT",
