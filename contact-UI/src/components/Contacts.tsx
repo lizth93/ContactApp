@@ -7,8 +7,7 @@ import Cookies from "js-cookie";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchContacts } from "../api/fetchContacts";
-
-
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 interface ContactsProps {
     className?: string
@@ -47,13 +46,20 @@ function ContactComponent(props: ContactsProps) {
     const handleCancelAdd = () => {
         setIsAdding(false)
     }
+    const handleLogout = () => {
+        Cookies.remove('lwaToken');
+        window.location.href = '/login';
+    };
 
     return (
         <>
             <div className={`${props.className} container`}>
+                <Button className="align-rt" variant="none" onClick={handleLogout}>
+                    <ExitToAppIcon sx={{ color: "red" }} fontSize="large" />
+                </Button>
                 <h1>Contacts</h1>
 
-                <Button className='add-button' onClick={handleAddContact}>+ Add new contact</Button>
+                <Button className='align-rt margin-botton-2' onClick={handleAddContact}>+ Add new contact</Button>
 
                 {isAdding && <Form isAdding={isAdding} cancelIsAdding={handleCancelAdd} />}
                 <div className='display-flex'>
@@ -65,8 +71,7 @@ function ContactComponent(props: ContactsProps) {
     );
 };
 export default styled(ContactComponent)`
-
- display: flex;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
@@ -76,10 +81,5 @@ export default styled(ContactComponent)`
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-
-}
-.add-button{
-  margin-bottom:  2rem;
-  align-self: flex-end;
 }
 `

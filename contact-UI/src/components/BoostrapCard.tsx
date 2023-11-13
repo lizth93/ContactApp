@@ -45,10 +45,7 @@ function BootstrapCard(props: Props) {
                 <Card.Text>
                     Phone Number: {props.contact.phoneNumber}
                 </Card.Text>
-                <Button variant="primary" onClick={handleShowModal}>Details</Button>
-                <Button variant="none" onClick={handleShowModalDelete}>
-                    <DeleteIcon />
-                </Button>
+
                 <Modal show={showModalEdit} onHide={handleCloseModal} contact={props.contact}>
                     <EditModal contact={props.contact} />
                 </Modal>
@@ -65,6 +62,12 @@ function BootstrapCard(props: Props) {
                     </div>
                 </Modal>
             </Card.Body>
+            <Card.Footer className='flex flex-space-between'>
+                <Button variant="primary" onClick={handleShowModal}>Details</Button>
+                <Button variant="none" onClick={handleShowModalDelete}>
+                    <DeleteIcon />
+                </Button>
+            </Card.Footer>
         </Card>
 
     );

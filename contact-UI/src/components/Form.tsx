@@ -36,9 +36,8 @@ function Form(props: FormProps) {
         }));
     }
     const handleSaveContact = async () => {
-        const data = await addContact(newContact)
+        await addContact(newContact)
         dispatch(fetchContacts() as any);
-        console.log(data, "new Contact ")
     }
 
     const handleCancelAdd = () => {
