@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,12 +21,13 @@ namespace contactApp.Controllers
         }
 
 
-        // GET: api/<ContactController>
         [HttpGet]
         public IEnumerable<Models.ContactDTO> Get()
         {
-            return context.Contacts.ToList();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return context.Contacts.Where(c => c.UserId == userId).ToList();
         }
+
 
         // GET api/<ContactController>/5
         [HttpGet("{id}")]
@@ -49,8 +51,13 @@ namespace contactApp.Controllers
 
         public IActionResult Post([FromBody] Models.ContactDTO newContact)
         {
+        
             if (newContact != null)
             {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                newContact.UserId = userId;
+
                 context.Contacts.Add(newContact);
                 context.SaveChanges();
 
@@ -64,15 +71,30 @@ namespace contactApp.Controllers
 
         // PUT api/<ContactController>/5
         [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] ContactDTO updatedContact)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        public async Task<IActionResult> Put(int id, [FromBody] ContactDTO updatedContact) {
+            var existingContact = await context.Contacts.FindAsync(id);
+
+            if (existingContact == null || existingContact.UserId != userId)
+            {
+                return NotFound();
+            }
 
             if (id != updatedContact.Id)
             {
                 return BadRequest();
             }
 
-            context.Contacts.Entry(updatedContact).State = EntityState.Modified;
+            existingContact.Name = updatedContact.Name;
+            existingContact.LastName = updatedContact.LastName;
+            existingContact.Email = updatedContact.Email;
+            existingContact.PhoneNumber = updatedContact.PhoneNumber;
+            existingContact.Birthday = updatedContact.Birthday;
+            existingContact.TeamMember = updatedContact.TeamMember;
+            existingContact.Address = updatedContact.Address;
+            existingContact.ImageUrl = updatedContact.ImageUrl;
 
             try
             {
@@ -93,6 +115,7 @@ namespace contactApp.Controllers
             return NoContent();
         }
 
+
         private bool ContactExists(int id)
         {
             return context.Contacts.Any(c => c.Id == id);
@@ -103,11 +126,13 @@ namespace contactApp.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
             var contact = await context.Contacts.FindAsync(id);
 
-            if (contact == null)
+            if (contact == null || contact.UserId != userId)
             {
-                return NotFound(); 
+                return NotFound();
             }
 
             context.Contacts.Remove(contact); 
