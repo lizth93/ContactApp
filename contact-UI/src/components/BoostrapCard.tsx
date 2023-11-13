@@ -6,7 +6,6 @@ import Modal from './Modal';
 import DeleteIcon from '@mui/icons-material/Delete';
 import deleteContact from '../api/deleteContact';
 import EditModal from './EditModal';
-
 interface Props {
     contact: Contacts
 }
@@ -21,9 +20,17 @@ function BootstrapCard(props: Props) {
         setShowModalEdit(false);
     };
 
+    const handleShowModalDelete = () => {
+        setShowModalDelete(true);
+    };
+
+    const handleCloseModalDelete = () => {
+        setShowModalDelete(false);
+    };
+
     const handleDeleteContact = async () => {
         const data = await deleteContact(props.contact.id)
-        console.log(data, "luz darta")
+        handleCloseModalDelete();
     };
 
     return (
@@ -35,11 +42,23 @@ function BootstrapCard(props: Props) {
                     Phone Number: {props.contact.phoneNumber}
                 </Card.Text>
                 <Button variant="primary" onClick={handleShowModal}>Details</Button>
-                <Button variant="none" onClick={handleDeleteContact}>
+                <Button variant="none" onClick={handleShowModalDelete}>
                     <DeleteIcon />
                 </Button>
                 <Modal show={showModalEdit} onHide={handleCloseModal} contact={props.contact}>
                     <EditModal contact={props.contact} />
+                </Modal>
+
+                <Modal show={showModalDelete} onHide={handleCloseModalDelete} contact={props.contact}>
+                    <div>
+                        <p>Are you sure you want to delete <strong>{props.contact.name}</strong>?</p>
+                        <Button variant="danger" onClick={handleDeleteContact}>
+                            Delete
+                        </Button>
+                        <Button variant="secondary" onClick={handleCloseModalDelete}>
+                            Cancel
+                        </Button>
+                    </div>
                 </Modal>
             </Card.Body>
         </Card>
