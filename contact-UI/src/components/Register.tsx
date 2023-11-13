@@ -31,13 +31,14 @@ function Register() {
         <MDBContainer >
             <MDBInput wrapperClass='mb-1' label='Email address' id='form1' type='email' value={email}
                 onChange={handleEmailChange} />
-            <MDBInput wrapperClass='mb-1' label='Password' id='form2' type='password' value={password}
+
+            <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' value={password}
                 onChange={handlePasswordChange} />
 
             <Button className="mb-4 my-custom-button-class" onClick={handleRegister}>Register</Button>
 
             <div className="text-center">
-                <p>Already a member? <a href="#!">Login</a></p>
+                <p>Already a member? <a href="/login">Login</a></p>
             </div>
         </MDBContainer>
     );
