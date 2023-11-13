@@ -5,15 +5,34 @@ import Form from "./Form";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchContacts } from "../api/fetchContacts";
+
+
 
 interface ContactsProps {
-    contacts: Contacts[],
     className?: string
+}
+export interface RootState {
+    contacts: {
+        contacts: Contacts[];
+    };
 }
 
 function ContactComponent(props: ContactsProps) {
+    const dispatch = useDispatch();
+    const contacts = useSelector((state: RootState) => state.contacts.contacts);
+
     const [isAdding, setIsAdding] = useState<boolean>(false)
     const isAuthorized = Cookies.get('lwaToken');
+
+    useEffect(() => {
+        function getContacts() {
+            dispatch(fetchContacts() as any);
+        }
+        getContacts()
+    }, [dispatch])
+
 
     useEffect(() => {
         if (!isAuthorized) {
@@ -38,7 +57,7 @@ function ContactComponent(props: ContactsProps) {
 
                 {isAdding && <Form isAdding={isAdding} cancelIsAdding={handleCancelAdd} />}
                 <div className='display-flex'>
-                    {props.contacts.map((c) => <BootstrapCard key={c.id} contact={c} />)}
+                    {contacts.map((c: any) => <BootstrapCard key={c.id} contact={c} />)}
                 </div>
 
             </div>

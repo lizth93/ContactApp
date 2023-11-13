@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import fetchContact from './api/fetchContacts';
-import { Contacts } from './types/card';
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -12,8 +10,10 @@ import {
 import Login from './components/Login';
 import ContactComponent from './components/Contacts';
 
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+
 function App() {
-  const [contacts, setContacts] = useState<Contacts[]>([])
   const [isAuthorize, setIsAuthorize] = useState<boolean>(false)
 
 
@@ -23,34 +23,24 @@ function App() {
     }
   }, [isAuthorize]);
 
-
-  useEffect(() => {
-    async function getContacts() {
-      const data = await fetchContact()
-      if (data) {
-        setContacts(data)
-      }
-    }
-    getContacts()
-  }, [])
-
   const handleAuthentication = (authorize: boolean) => {
     setIsAuthorize(authorize)
   }
 
   return (
-
-    <RouterProvider
-      router={createBrowserRouter(
-        createRoutesFromElements(
-          <>
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="home" element={<ContactComponent contacts={contacts} />} />
-            <Route path="login" element={<Login onAuthentication={handleAuthentication} />} />
-          </>
-        )
-      )}
-    />
+    <Provider store={store}>
+      <RouterProvider
+        router={createBrowserRouter(
+          createRoutesFromElements(
+            <>
+              <Route path="/" element={<Navigate to="/login" replace />} />
+              <Route path="home" element={<ContactComponent />} />
+              <Route path="login" element={<Login onAuthentication={handleAuthentication} />} />
+            </>
+          )
+        )}
+      />
+    </Provider>
 
 
   );

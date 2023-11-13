@@ -6,10 +6,13 @@ import Modal from './Modal';
 import DeleteIcon from '@mui/icons-material/Delete';
 import deleteContact from '../api/deleteContact';
 import EditModal from './EditModal';
+import { fetchContacts } from '../api/fetchContacts';
+import { useDispatch } from 'react-redux';
 interface Props {
     contact: Contacts
 }
 function BootstrapCard(props: Props) {
+    const dispatch = useDispatch();
     const [showModalEdit, setShowModalEdit] = useState(false);
     const [showModalDelete, setShowModalDelete] = useState(false);
 
@@ -29,7 +32,8 @@ function BootstrapCard(props: Props) {
     };
 
     const handleDeleteContact = async () => {
-        const data = await deleteContact(props.contact.id)
+        await deleteContact(props.contact.id)
+        dispatch(fetchContacts() as any);
         handleCloseModalDelete();
     };
 
