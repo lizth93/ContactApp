@@ -1,37 +1,14 @@
 import BootstrapModal, { ModalProps } from 'react-bootstrap/Modal';
 import { Contacts } from '../types/card';
-import Image from 'react-bootstrap/Image';
-import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
-import { useState } from 'react';
-import Input from './Input';
-import updateContact from '../api/updateContact';
-import { inputFields } from '../constants';
+import { ReactNode } from 'react';
 
-function Modal(props: ModalProps) {
-    const [isEditing, setIsEditing] = useState(false);
-    const [editedContact, setEditedContact] = useState<Contacts>({ ...props.contact });
+interface CustomModalProps extends ModalProps {
+    contact: Contacts;
+    children: ReactNode;
+}
 
-    const handleEditContact = () => {
-        setIsEditing(true);
-    };
-
-    const handleCancelEdit = () => {
-        setEditedContact({ ...props.contact });
-        setIsEditing(false);
-    };
-
-    const handleEditValue = (field: string, newValue: string) => {
-        setEditedContact((prevEditedContact: Contacts) => ({
-            ...prevEditedContact,
-            [field]: newValue,
-        }));
-    };
-
-    const handleSaveContact = async () => {
-        setIsEditing(false);
-        await updateContact(props.contact.id, editedContact)
-    };
+function Modal(props: CustomModalProps) {
 
     return (
         <BootstrapModal
@@ -50,55 +27,7 @@ function Modal(props: ModalProps) {
             </BootstrapModal.Header>
             <BootstrapModal.Body>
                 <div className='modal-grid '>
-                    <Image src={props.contact.imageUrl} alt="Contact" className='image' />
-
-                    <div>
-                        {isEditing ? (
-
-                            <>
-                                {inputFields.map((field) => (
-                                    <Input
-                                        key={field.key}
-                                        type={field.type}
-                                        label={field.label}
-                                        value={editedContact[field.key]}
-                                        onChange={(newValue) => handleEditValue(field.key, newValue)}
-                                    />
-                                ))}
-                            </>
-
-                        ) : (
-
-                            <ul>
-                                <li>Name: {props.contact.name}</li>
-                                <li>Last Name: {props.contact.lastName}</li>
-                                <li>Email: {props.contact.email}</li>
-                                <li>Phone Number:<strong>{props.contact.phoneNumber}</strong></li>
-                                <li>Team Member: {props.contact.teamMember}</li>
-                                <li>Address: {props.contact.address}</li>
-                            </ul>
-                        )}
-
-                        <div className='contact-buttons'>
-                            {isEditing ? (
-                                <>
-                                    <Button variant="secondary" onClick={handleSaveContact}>
-                                        Save
-                                    </Button>
-                                    <Button variant="danger" onClick={handleCancelEdit}>
-                                        Cancel
-                                    </Button>
-                                </>
-                            ) : (
-
-                                <Button variant="primary" onClick={handleEditContact}>
-                                    Edit
-                                </Button>
-                            )}
-
-                        </div>
-                    </div>
-
+                    {props.children}
                 </div>
 
             </BootstrapModal.Body>

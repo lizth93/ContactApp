@@ -5,18 +5,20 @@ import { Contacts } from '../types/card';
 import Modal from './Modal';
 import DeleteIcon from '@mui/icons-material/Delete';
 import deleteContact from '../api/deleteContact';
+import EditModal from './EditModal';
 
 interface Props {
     contact: Contacts
 }
 function BootstrapCard(props: Props) {
-    const [showModal, setShowModal] = useState(false);
+    const [showModalEdit, setShowModalEdit] = useState(false);
+    const [showModalDelete, setShowModalDelete] = useState(false);
 
     const handleShowModal = () => {
-        setShowModal(true);
+        setShowModalEdit(true);
     };
     const handleCloseModal = () => {
-        setShowModal(false);
+        setShowModalEdit(false);
     };
 
     const handleDeleteContact = async () => {
@@ -36,7 +38,9 @@ function BootstrapCard(props: Props) {
                 <Button variant="none" onClick={handleDeleteContact}>
                     <DeleteIcon />
                 </Button>
-                <Modal show={showModal} onHide={handleCloseModal} contact={props.contact}></Modal>
+                <Modal show={showModalEdit} onHide={handleCloseModal} contact={props.contact}>
+                    <EditModal contact={props.contact} />
+                </Modal>
             </Card.Body>
         </Card>
 
