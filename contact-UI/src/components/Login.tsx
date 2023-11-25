@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     MDBContainer,
     MDBInput,
@@ -24,6 +24,19 @@ function Login(props: Props) {
     const [showModal, setShowModal] = useState(false);
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [rememberMe, setRememberMe] = useState<boolean>(false);
+
+    useEffect(() => {
+        const rememberMeValue = localStorage.getItem('rememberMe') === 'true';
+        setRememberMe(rememberMeValue);
+
+        if (rememberMeValue) {
+            const storedEmail = localStorage.getItem('email') || "";
+            const storedPassword = localStorage.getItem('password') || "";
+            setEmail(storedEmail);
+            setPassword(storedPassword);
+        }
+    }, []);
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
@@ -33,9 +46,23 @@ function Login(props: Props) {
         setPassword(e.target.value);
     }
 
+    const handleRememberMeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setRememberMe(e.target.checked);
+    }
+
     const handleLogin = async () => {
         const data = await getAuth(email, password)
         props.onAuthentication(data);
+
+        localStorage.setItem('rememberMe', rememberMe.toString());
+
+        if (rememberMe) {
+            localStorage.setItem('email', email);
+            localStorage.setItem('password', password);
+        } else {
+            localStorage.removeItem('email');
+            localStorage.removeItem('password');
+        }
 
     }
     const handleRegister = () => {
@@ -54,8 +81,14 @@ function Login(props: Props) {
                 onChange={handlePasswordChange} />
 
             <div className="d-flex justify-content-between mx-3 mb-4">
-                <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' />
-                <a href="!#">Forgot password?</a>
+                <MDBCheckbox
+                    name='flexCheck'
+                    value=''
+                    id='flexCheckDefault'
+                    label='Remember me'
+                    checked={rememberMe}
+                    onChange={handleRememberMeChange}
+                />
             </div>
 
             <Button className="mb-4 my-custom-button-class" onClick={handleLogin}>Sign in</Button>
